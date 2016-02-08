@@ -11,10 +11,12 @@
 #import "FeedbackCell.h"
 #import "PageControlCell.h"
 #import "FullImageCell.h"
+#import "Constant.h"
 #import "UIImageView+AFNetworking.h"
 
 @interface ViewController ()
 
+@property(nonatomic, weak)IBOutlet UITableView *feedTable;
 @property(nonatomic, strong)NSArray *feedObjects;
 
 @end
@@ -26,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _feedTable.backgroundColor = COLOR_TABLE_BG;
     _feedObjects = [[[Accessor sharedInstance] fileMgr] feedObjects];
 }
 
@@ -34,7 +37,7 @@
 }
 
 
-#pragma mark - UICollectionViewDataSource/UICollectionViewDelegate
+#pragma mark - UITableViewDataSource/UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
@@ -48,7 +51,16 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
+    return HEIGHT_FEED_TABLE_SECTION_HEADER;
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                  _feedTable.bounds.size.width,
+                                                                  HEIGHT_FEED_TABLE_SECTION_HEADER)];
+    headerView.backgroundColor = COLOR_TABLE_BG;
+    
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -37,6 +37,7 @@ static NSString *itemCellId = @"ItemCellId";
     
     ItemObject *object = [_items objectAtIndex:indexPath.row];
     [cell.imgView setImageWithURL:[NSURL URLWithString:object.imgUrl] placeholderImage:nil];
+    cell.lblDesc.text = object.desc;
     
     return cell;
 }

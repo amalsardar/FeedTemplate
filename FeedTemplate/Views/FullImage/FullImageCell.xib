@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SeS-Ut-CU1">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SeS-Ut-CU1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
                         <animations/>
                     </imageView>
@@ -27,7 +27,7 @@
                 </constraints>
             </tableViewCellContentView>
             <animations/>
-            <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.89411764705882346" green="0.89803921568627454" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="imgView" destination="SeS-Ut-CU1" id="pnh-0F-YBQ"/>
             </connections>

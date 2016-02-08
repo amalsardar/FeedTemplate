@@ -11,5 +11,10 @@
 @interface ItemCell : UICollectionViewCell
 
 @property(nonatomic, weak)IBOutlet UIImageView *imgView;
+@property(nonatomic, weak)IBOutlet UIButton *btnCart;
+@property(nonatomic, weak)IBOutlet UILabel *lblDesc;
+@property(nonatomic, weak)IBOutlet UILabel *lblDiscountedPrice;
+@property(nonatomic, weak)IBOutlet UILabel *lblActuatPrice;
+
 
 @end
