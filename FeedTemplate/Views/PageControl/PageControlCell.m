@@ -10,6 +10,11 @@
 #import "ItemObject.h"
 #import "UIImageView+AFNetworking.h"
 
+@interface PageControlCell()
+
+
+@end
+
 
 @implementation PageControlCell
 
@@ -22,65 +27,75 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    CGFloat pageWidth = CGRectGetWidth(scrollView.frame);
+    CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;// CGRectGetWidth(scrollView.frame);
     NSInteger currentPage = (int)floor((scrollView.contentOffset.x-pageWidth/2)/pageWidth)+1;
+    NSLog(@"Scrollview width = %f", pageWidth);
     
     self.pageControl.currentPage = currentPage;
-    [self setPageImage];
+    [self setPageImage:currentPage];
 }
 
 - (void)scrollViewSetupWithItems:(NSArray*)theItems {
     _items = theItems;
-    CGFloat scrollViewWidth = _scrollView.bounds.size.width;
-    CGFloat scrollViewHeight = _scrollView.bounds.size.height;
+    CGFloat scrollViewWidth = [UIScreen mainScreen].bounds.size.width; // CGRectGetWidth(_scrollView.frame);
+    CGFloat scrollViewHeight = CGRectGetHeight(_scrollView.frame);
+    
+    NSArray *subViews = [_scrollView subviews];
+    for (id subView in subViews)
+        [subView removeFromSuperview];
     
     for (int count = 0; count < _items.count; count++) {
-        // ItemObject *object = [_items objectAtIndex:count];
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(scrollViewWidth * count, 0,
                                                                              scrollViewWidth,
                                                                              scrollViewHeight)];
         imgView.contentMode = UIViewContentModeScaleToFill;
         imgView.clipsToBounds = YES;
-        // [imgView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
         imgView.tag = 1000 + count;
-        imgView.backgroundColor = [UIColor cyanColor];
         [_scrollView addSubview:imgView];
         
         // Set Layout
-        UILayoutGuide *margins = [_scrollView layoutMarginsGuide];
-        [[imgView leadingAnchor] constraintEqualToAnchor:margins.leadingAnchor].active = true;
-        [[imgView trailingAnchor] constraintEqualToAnchor:margins.trailingAnchor].active = true;
-        [[imgView topAnchor] constraintEqualToAnchor:margins.topAnchor].active = true;
-        [[imgView bottomAnchor] constraintEqualToAnchor:margins.bottomAnchor].active = true;
+//        [imgView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//        UILayoutGuide *margins = [_scrollView layoutMarginsGuide];
+//        [[imgView leadingAnchor] constraintEqualToAnchor:margins.leadingAnchor].active = true;
+//        [[imgView trailingAnchor] constraintEqualToAnchor:margins.trailingAnchor].active = true;
+//        [[imgView topAnchor] constraintEqualToAnchor:margins.topAnchor].active = true;
+//        [[imgView bottomAnchor] constraintEqualToAnchor:margins.bottomAnchor].active = true;
+//        [[imgView widthAnchor] constraintEqualToAnchor:margins.widthAnchor].active = true;
+//        [[imgView heightAnchor] constraintEqualToAnchor:margins.heightAnchor].active = true;
         
-//        [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:imgView
-//                                                              attribute:NSLayoutAttributeWidth
-//                                                              relatedBy:NSLayoutRelationEqual
-//                                                                 toItem:_scrollView
-//                                                              attribute:NSLayoutAttributeWidth
-//                                                             multiplier:1.0
-//                                                               constant:0]];
+        NSLog(@"Scrollview width = %f", scrollViewWidth);
         
-        if (!count)
-            [self setPageImage];
+        ItemObject *object = [_items objectAtIndex:count];
+        _lblOccation.text = object.desc;
     }
     
     _scrollView.contentSize = CGSizeMake(scrollViewWidth * _items.count, scrollViewHeight);
-    _scrollView.delegate = self;
+    [_scrollView setCanCancelContentTouches:YES];
+    _scrollView.userInteractionEnabled = YES;
+    
     _pageControl.numberOfPages = _items.count;
     _pageControl.currentPage = 0;
+    
+    [self setPageImage:0];
 }
 
-- (void)setPageImage {
-    CGFloat scrollViewWidth = _scrollView.bounds.size.width;
-    NSInteger currentPage = (int)floor((_scrollView.contentOffset.x-scrollViewWidth/2)/scrollViewWidth)+1;
-    id obj = [_scrollView viewWithTag:1000+currentPage];
+- (void)setPageImage:(NSUInteger)currentPage {
+    CGFloat scrollViewWidth = [UIScreen mainScreen].bounds.size.width; // CGRectGetWidth(_scrollView.frame);
+    CGFloat scrollViewHeight = CGRectGetHeight(_scrollView.frame);
+    id obj = [_scrollView viewWithTag:1000 + currentPage];
     if ([obj isKindOfClass:[UIImageView class]]) {
         UIImageView *tempImgView = (UIImageView*)obj;
+        [_scrollView scrollRectToVisible:CGRectMake(currentPage * scrollViewWidth, 0,
+                                                    scrollViewWidth, scrollViewHeight) animated:NO];
+        // TODO!!!
+        if (tempImgView.tag == 1000) {
+            _scrollView.contentOffset = CGPointMake(0, 0);
+        }
+        
         ItemObject *itemObject = [_items objectAtIndex:currentPage];
         NSLog(@"Set image for index = %ld", (long)currentPage);
-        [tempImgView setImageWithURL:[NSURL URLWithString:itemObject.imgUrl] placeholderImage:nil];
+        [tempImgView setImageWithURL:[NSURL URLWithString:itemObject.imgUrl] placeholderImage:[UIImage imageNamed:@"cart"]];
     }
 }
 

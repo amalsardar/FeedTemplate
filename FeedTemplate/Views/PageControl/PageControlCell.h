@@ -11,8 +11,11 @@
 @interface PageControlCell : UITableViewCell<UIScrollViewDelegate>
 
 @property (strong, nonatomic)NSArray *items;
-@property (strong, nonatomic)IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic)IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic)IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic)IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic)IBOutlet UILabel *lblOccation;
+@property (weak, nonatomic)IBOutlet UILabel *lblDiscount;
+@property (weak, nonatomic)IBOutlet UILabel *lblCondition;
 
 - (void)scrollViewSetupWithItems:(NSArray*)theItems;
 
